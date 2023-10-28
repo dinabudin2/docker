@@ -1,0 +1,39 @@
+version: '3'
+services:
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    links:
+      - app1
+      - app2
+      - app3
+
+  app1:
+    build:
+      context: ./app
+    volumes:
+      - ./app/logs:/app/logs
+
+  app2:
+    build:
+      context: ./app
+    volumes:
+      - ./app/logs:/app/logs
+
+  app3:
+    build:
+      context: ./app
+    volumes:
+      - ./app/logs:/app/logs
+
+  db:
+    image: postgres:latest
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/logs:/var/log/postgresql
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
